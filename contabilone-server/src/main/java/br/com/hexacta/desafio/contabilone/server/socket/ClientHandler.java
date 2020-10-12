@@ -14,9 +14,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -45,7 +43,10 @@ public class ClientHandler implements Runnable {
     public void run() {
         try {
             PrintWriter saida = new PrintWriter(client.getOutputStream(), true);
-            BufferedReader reader = new BufferedReader(new InputStreamReader(client.getInputStream(), StandardCharsets.UTF_8));
+
+            BufferedReader reader = new BufferedReader(
+                    new InputStreamReader(client.getInputStream(), StandardCharsets.UTF_8)
+            );
 
             String title;
 
@@ -77,7 +78,7 @@ public class ClientHandler implements Runnable {
      * será usado como resposta para o cliente. O template gerado é setado na
      * variavel payload {@link String}
      *
-     * @param title
+     * @param title {@link String}
      * @throws IOException
      */
     private void delegate(String title) throws IOException {
@@ -88,8 +89,8 @@ public class ClientHandler implements Runnable {
 
             movies = movies.stream()
                     .filter(distinctBy(MovieDTO::getTitle))
+                    .sorted(Comparator.comparing(MovieDTO::getTitle))
                     .collect(Collectors.toList());
-
         } else {
             movies = cropperMovieService.findByTitle(title);
         }

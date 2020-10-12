@@ -21,14 +21,13 @@ public class MainServer {
      * Captura o parametro <b>--port</b> ao executar o projeto, caso contrario
      * retorna a porta padrão 1024.
      *
-     * @param args
+     * @param args {@link String[]}
      * @return a porta para o server
      */
     private static int portServer(String[] args) {
-        List<String> commands = Arrays.asList(args);
         AtomicInteger port = new AtomicInteger(3322); // default port
 
-        commands.forEach(command -> {
+        Arrays.asList(args).forEach(command -> {
             if (command.startsWith("--port=")) {
                 String value = command.substring(command.indexOf("--port="), command.length() - 1);
 

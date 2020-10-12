@@ -52,6 +52,7 @@ public class ClientIMDB {
                 log.info("Buscando \"{}\" aguarde...", term);
 
                 String message = published(term);
+                System.out.printf("%n %n");
                 System.out.println(message);
 
                 if (message.isEmpty()) {

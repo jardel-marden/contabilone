@@ -16,6 +16,7 @@
 
         <contabilone-server.version>0.0.1</contabilone-server.version>
         <contabilone-client.version>0.0.1</contabilone-client.version>
+        <deploy.destination>../packages/contabilone_V</deploy.destination>
     </properties>
 
     <modules>
