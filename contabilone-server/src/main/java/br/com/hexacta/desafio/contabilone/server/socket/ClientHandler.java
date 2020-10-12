@@ -14,15 +14,16 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
-import java.util.*;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
-
-import static br.com.hexacta.desafio.contabilone.server.utils.StringUtil.LINE_SEPARATOR;
 
 /**
  * Cliente handler para ouvir as solicitações multiplas dos clientes.
@@ -59,24 +60,22 @@ public class ClientHandler implements Runnable {
 
             String line;
             String title = "";
-            StringBuilder query = new StringBuilder();
 
             Pattern pattern = Pattern.compile("\\sTitle+:([0-9a-zA-Z])");
 
             while ((line = leitura.readLine()) != null) {
-                query.append(String.format("%s%s", line, LINE_SEPARATOR));
-
                 Matcher matcher = pattern.matcher(line);
 
                 if (matcher.find()) {
                     title = matcher.replaceFirst("$1");
+                    break;
                 }
             }
 
-            System.out.println("Client search query:");
-            System.out.println(query.toString());
+            System.out.println("Client search title: " + title);
 
-            delegar(title, saida);
+            String result = payload(title);
+            saida.println(result);
 
             saida.close();
             leitura.close();
@@ -99,7 +98,7 @@ public class ClientHandler implements Runnable {
      * @param title {@link String}
      * @throws IOException
      */
-    private void delegar(String title, final PrintWriter saida) throws IOException {
+    private String payload(String title) throws IOException {
         List<MovieDTO> movies = apiImdbMovieService.findByTitle(title);
 
         if (Objects.nonNull(movies)) {
@@ -113,8 +112,7 @@ public class ClientHandler implements Runnable {
             movies = cropperMovieService.findByTitle(title);
         }
 
-        String payload = ResponseSocketUtil.payload(movies);
-        saida.println(payload);
+        return ResponseSocketUtil.payload(movies);
     }
 
     public static <T> Predicate<T> distinctBy(Function<? super T, ?> f) {

@@ -23,7 +23,7 @@ import static br.com.hexacta.desafio.contabilone.client.utils.StringUtil.LINE_SE
 public class ClientIMDB {
 
     private PrintWriter saida;
-    private BufferedReader reader;
+    private BufferedReader leitura;
 
     public ClientIMDB connect(String ip, int port) {
 
@@ -38,7 +38,7 @@ public class ClientIMDB {
             }
 
             saida = new PrintWriter(client.getOutputStream(), true);
-            reader = new BufferedReader(new InputStreamReader(client.getInputStream(), StandardCharsets.UTF_8));
+            leitura = new BufferedReader(new InputStreamReader(client.getInputStream(), StandardCharsets.UTF_8));
         } catch (IOException e) {
             log.error(e.getMessage());
         }
@@ -51,23 +51,19 @@ public class ClientIMDB {
         Scanner teclado = new Scanner(System.in);
 
         try {
-            while (teclado.hasNextLine()) {
+            if (teclado.hasNextLine()) {
                 String term = teclado.nextLine();
                 log.info("Buscando \"{}\" aguarde...", term);
 
                 String message = published(term);
-                System.out.printf("%n %n");
+                System.out.printf("%n");
                 System.out.println(message);
-
-                if (message.isEmpty()) {
-                    break;
-                }
             }
         } catch (IOException e) {
             log.error("Socket read Error");
         } finally {
             saida.close();
-            reader.close();
+            leitura.close();
         }
     }
 
@@ -85,28 +81,26 @@ public class ClientIMDB {
         Pattern pattern = Pattern.compile("<query ([0-9])>.*\\tTitle+:([0-9a-zA-Z]).*<query>", Pattern.DOTALL);
         Matcher matcher = pattern.matcher(body);
 
-        if (matcher.find()) {
-            saida.println(body);
-        } else {
+        if (!matcher.find()) {
             StringBuilder builder = new StringBuilder();
             builder.append(String.format("<query %s>%s", body.length(), LINE_SEPARATOR));
             builder.append(String.format("\tTitle:%s%s", body, LINE_SEPARATOR));
             builder.append("<query>");
-
-            saida.println(builder.toString());
+            body = builder.toString();
         }
 
+        saida.println(body);
         return onMessage();
     }
 
     public String onMessage() throws IOException {
-        String line = reader.readLine();
+        String line = leitura.readLine();
         StringBuilder builder = new StringBuilder();
 
         builder.append(line).append(LINE_SEPARATOR);
 
         while (line != null && !line.isEmpty()) {
-            line = reader.readLine();
+            line = leitura.readLine();
             builder.append(line).append(LINE_SEPARATOR);
         }
 
