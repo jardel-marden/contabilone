@@ -4,7 +4,6 @@ import br.com.hexacta.desafio.contabilone.server.socket.ServerIMDB;
 
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -29,7 +28,7 @@ public class MainServer {
 
         Arrays.asList(args).forEach(command -> {
             if (command.startsWith("--port=")) {
-                String value = command.substring(command.indexOf("--port="), command.length() - 1);
+                String value = command.substring((command.indexOf("=") + 1));
 
                 try {
                     if (!value.isEmpty()) {

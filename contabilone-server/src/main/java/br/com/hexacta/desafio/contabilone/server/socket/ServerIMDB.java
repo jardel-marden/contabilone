@@ -50,10 +50,4 @@ public class ServerIMDB {
             System.out.println("Server stop");
         }
     }
-
-    public void close() throws IOException {
-        if (server.isBound()) {
-            server.close();
-        }
-    }
 }

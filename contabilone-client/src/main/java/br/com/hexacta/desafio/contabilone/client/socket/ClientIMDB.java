@@ -10,6 +10,10 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import static br.com.hexacta.desafio.contabilone.client.utils.StringUtil.LINE_SEPARATOR;
 
 /**
  * @author Jardel Marden on 11/10/2020
@@ -68,27 +72,42 @@ public class ClientIMDB {
     }
 
     /**
-     * Solicita ao server tcp/ip uma consulta de filmes por titulo
+     * Solicita ao server tcp/ip uma consulta de filmes por titulo, o template
+     * <query> sera auto identificado antes de gerar um template. Caso contrário
+     * cria-se um template para a requisição.
      *
-     * @param title
+     * @param body
      * @return Uma list de filmes por título
      * @throws IOException
      */
-    public String published(String title) throws IOException {
-        saida.println(title);
+    public String published(String body) throws IOException {
+
+        Pattern pattern = Pattern.compile("<query ([0-9])>.*\\tTitle+:([0-9a-zA-Z]).*<query>", Pattern.DOTALL);
+        Matcher matcher = pattern.matcher(body);
+
+        if (matcher.find()) {
+            saida.println(body);
+        } else {
+            StringBuilder builder = new StringBuilder();
+            builder.append(String.format("<query %s>%s", body.length(), LINE_SEPARATOR));
+            builder.append(String.format("\tTitle:%s%s", body, LINE_SEPARATOR));
+            builder.append("<query>");
+
+            saida.println(builder.toString());
+        }
+
         return onMessage();
     }
 
     public String onMessage() throws IOException {
-        String lineSeparator = System.getProperty("line.separator");
         String line = reader.readLine();
         StringBuilder builder = new StringBuilder();
 
-        builder.append(line).append(lineSeparator);
+        builder.append(line).append(LINE_SEPARATOR);
 
         while (line != null && !line.isEmpty()) {
             line = reader.readLine();
-            builder.append(line).append(lineSeparator);
+            builder.append(line).append(LINE_SEPARATOR);
         }
 
         return builder.toString();

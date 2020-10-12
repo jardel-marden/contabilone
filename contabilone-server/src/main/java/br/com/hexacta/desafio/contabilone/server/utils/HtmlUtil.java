@@ -12,6 +12,9 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
+ * Utilitario usado para fazer os recortes da pagina consultada, após isso será filtrado
+ * os titulos da pagina e realizado o parse do mesmo para uma {@link List<MovieDTO>}
+ *
  * @author Jardel Marden on 11/10/2020
  * @project ContabilOne
  */
@@ -29,12 +32,12 @@ public abstract class HtmlUtil {
                         .filter(td -> !td.get(0).getElementsByTag("a").isEmpty())
                         .flatMap(td -> {
                             String title = td.get(0).getElementsByTag("a").text();
-                            String year = td.get(0).html().substring(td.get(0).html().indexOf("</a>") + 3, td.get(0).html().length() - 1);
+                            String year = td.get(0).select(":not(a)").text();
 
                             Matcher matcher = Pattern.compile("([0-9])").matcher(year);
 
                             if (matcher.find()) {
-                                year = matcher.group(0);
+                                year = year.replaceAll("[^0-9]", "");
                             }
 
                             MovieDTO movie = new MovieDTO();

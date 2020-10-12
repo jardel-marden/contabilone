@@ -18,12 +18,15 @@ import java.util.*;
 import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+
+import static br.com.hexacta.desafio.contabilone.server.utils.StringUtil.LINE_SEPARATOR;
 
 @Slf4j
 public class ClientHandler implements Runnable {
 
-    private String payload;
     private final Socket client;
     private final ApiImdbMovieService apiImdbMovieService;
     private final CropperMovieService cropperMovieService;
@@ -44,23 +47,33 @@ public class ClientHandler implements Runnable {
         try {
             PrintWriter saida = new PrintWriter(client.getOutputStream(), true);
 
-            BufferedReader reader = new BufferedReader(
+            BufferedReader leitura = new BufferedReader(
                     new InputStreamReader(client.getInputStream(), StandardCharsets.UTF_8)
             );
 
-            String title;
+            String line;
+            String title = "";
+            StringBuilder query = new StringBuilder();
 
-            while ((title = reader.readLine()) != null) {
-                System.out.printf("Client search movie title: %s%n", title);
+            Pattern pattern = Pattern.compile("\\sTitle+:([0-9a-zA-Z])");
 
-                if (!title.isEmpty()) {
-                    delegate(title);
-                    saida.println(payload);
+            while ((line = leitura.readLine()) != null) {
+                query.append(String.format("%s%s", line, LINE_SEPARATOR));
+
+                Matcher matcher = pattern.matcher(line);
+
+                if (matcher.find()) {
+                    title = matcher.replaceFirst("$1");
                 }
             }
 
+            System.out.println("Client search query:");
+            System.out.println(query.toString());
+
+            delegar(title, saida);
+
             saida.close();
-            reader.close();
+            leitura.close();
             client.close();
         } catch (IOException e) {
             log.error(e.getMessage());
@@ -71,17 +84,16 @@ public class ClientHandler implements Runnable {
      * Adicionei dois serviços de consulta para os titulos, um deles por meio
      * de uma API Rest e o segundo fluxo fazendo recortes no site https://www.imdb.com
      * <p>
-     * Apos realizar a consulta é feito um merge dos resultados e também filtrado
-     * por titulos duplicados.
+     * Apos realizar a consulta é feito um merge dos resultados, filtrado os registros
+     * duplicados e ordenado por titulo.
      * <p>
      * A lista com os titulos é tratada para gerar um novo template e o mesmo
-     * será usado como resposta para o cliente. O template gerado é setado na
-     * variavel payload {@link String}
+     * será usado como resposta para o cliente.
      *
      * @param title {@link String}
      * @throws IOException
      */
-    private void delegate(String title) throws IOException {
+    private void delegar(String title, final PrintWriter saida) throws IOException {
         List<MovieDTO> movies = apiImdbMovieService.findByTitle(title);
 
         if (Objects.nonNull(movies)) {
@@ -95,7 +107,8 @@ public class ClientHandler implements Runnable {
             movies = cropperMovieService.findByTitle(title);
         }
 
-        this.payload = ResponseSocketUtil.payload(movies);
+        String payload = ResponseSocketUtil.payload(movies);
+        saida.println(payload);
     }
 
     public static <T> Predicate<T> distinctBy(Function<? super T, ?> f) {
