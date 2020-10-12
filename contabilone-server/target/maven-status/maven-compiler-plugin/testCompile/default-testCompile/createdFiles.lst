@@ -1,0 +1,3 @@
+br/com/hexacta/desafio/contabilone/server/ServerIMDBTest.class
+br/com/hexacta/desafio/contabilone/server/services/impl/OmdbApiImdbMovieServiceImplTest.class
+br/com/hexacta/desafio/contabilone/server/services/impl/ImdbCropperMovieServiceTest.class

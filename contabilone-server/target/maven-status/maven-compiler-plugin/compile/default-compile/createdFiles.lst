@@ -1,0 +1,13 @@
+br/com/hexacta/desafio/contabilone/server/domains/SearchMovieDTO.class
+br/com/hexacta/desafio/contabilone/server/socket/ClientHandler.class
+br/com/hexacta/desafio/contabilone/server/domains/MovieDTO.class
+br/com/hexacta/desafio/contabilone/server/socket/ServerIMDB.class
+br/com/hexacta/desafio/contabilone/server/services/ApiImdbMovieService.class
+br/com/hexacta/desafio/contabilone/server/services/impl/OmdbApiMovieServiceImpl$1.class
+br/com/hexacta/desafio/contabilone/server/services/impl/OmdbApiMovieServiceImpl.class
+br/com/hexacta/desafio/contabilone/server/utils/HtmlUtil.class
+br/com/hexacta/desafio/contabilone/server/utils/ResponseSocketUtil.class
+br/com/hexacta/desafio/contabilone/server/services/MovieService.class
+br/com/hexacta/desafio/contabilone/server/MainServer.class
+br/com/hexacta/desafio/contabilone/server/services/CropperMovieService.class
+br/com/hexacta/desafio/contabilone/server/services/impl/ImdbCropperMovieServiceImpl.class
