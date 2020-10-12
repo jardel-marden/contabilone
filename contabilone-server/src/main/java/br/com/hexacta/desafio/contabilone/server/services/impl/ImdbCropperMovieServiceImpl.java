@@ -39,7 +39,8 @@ public class ImdbCropperMovieServiceImpl implements CropperMovieService {
     }
 
     /**
-     * Usado para especificamente num teste unitário, corresponde ao mesmo processo em @{@link #findByTitle}
+     * Usado por um teste unitário, corresponde ao mesmo processo que @{@link #findByTitle} porem com retorno
+     * diferente
      *
      * @param title
      * @return
