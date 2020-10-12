@@ -1,5 +1,8 @@
 ### Description
-Desafio proposto pela hexacta para um teste seletivo sendo ele, um server socket em java 8 para consultar títulos de filmes.
+Desafio proposto pela hexacta para um teste seletivo. Implementação de um servidor socket TCP/IP em java 8 para consultar 
+títulos de filmes. No processo decide incluir a consulta via API Rest, segue o link da API http://www.omdbapi.com e somando 
+aos resultados também inclui uma consulta (text/html) ao site https://www.imdb.com com recorte dos títulos em parte da
+página.
 
 ### Platform
  - Java 8 SDK 1.8 
