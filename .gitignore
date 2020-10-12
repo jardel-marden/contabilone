@@ -1,4 +1,5 @@
-./target/**
-./.ideia/**
+./contabilone-client/target/*
+./contabilone-server/target/*
+.ideia/**
 
 *.iml
