@@ -30,18 +30,10 @@ class ServerIMDBTest {
     @DisplayName("Testa consulta com auto gerador de template")
     @Test
     public void testSocketConnectionComGeradorTemplate() {
-        listen("bela");
-    }
+        String builder = String.format("<query %s>%s", "bela".length(), StringUtil.LINE_SEPARATOR) +
+                String.format("\tTitle:%s%s", "bela", StringUtil.LINE_SEPARATOR) + "<query>";
 
-    @DisplayName("Testa consulta com template")
-    @Test
-    public void testSocketConnectionSemGeradorTemplate() {
-        StringBuilder builder = new StringBuilder();
-        builder.append(String.format("<query %s>%s", "bela".length(), StringUtil.LINE_SEPARATOR));
-        builder.append(String.format("\tTitle:%s%s", "bela", StringUtil.LINE_SEPARATOR));
-        builder.append("<query>");
-
-        listen(builder.toString());
+        listen(builder);
     }
 
     public void listen(String body) {
