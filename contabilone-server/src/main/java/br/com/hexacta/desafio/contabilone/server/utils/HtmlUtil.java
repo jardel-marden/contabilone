@@ -20,7 +20,17 @@ import java.util.stream.Stream;
  */
 public abstract class HtmlUtil {
 
-    public static List<MovieDTO> parse(Elements table) {
+    /**
+     * Realiza o parse da list de {@link Element} que serão filtrados conforme a condicional,
+     * td.result_text, não podem ser isEmpty e dentro deste elemento deve existir uma tag <a>
+     * após isso o valor dentro da tag <a> será recuperado e que irá definir o <b>title</b>,
+     * caso exista dentro da tag <td> um valores que represente uma data o mesmo será recuperado
+     * também.
+     *
+     * @param table
+     * @return
+     */
+    public static List<MovieDTO> toMovie(Elements table) {
         List<MovieDTO> result = new ArrayList<>();
 
         try {

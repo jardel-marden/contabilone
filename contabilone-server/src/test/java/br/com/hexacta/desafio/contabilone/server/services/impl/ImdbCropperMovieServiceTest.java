@@ -27,7 +27,7 @@ class ImdbCropperMovieServiceTest {
         this.service.parseHTML(HTMLString);
 
         Elements table = this.service.getElements(SELECTOR_DEFAULT);
-        List<MovieDTO> result = HtmlUtil.parse(table);
+        List<MovieDTO> result = HtmlUtil.toMovie(table);
 
         Assertions.assertNotNull(table);
         Assertions.assertNotNull(result);

@@ -14,6 +14,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * Implementação do serviço para consulta de titulos via API Rest
+ *
  * @author Jardel Marden on 11/10/2020
  * @project ContabilOne
  */
@@ -23,9 +25,7 @@ public class OmdbApiMovieServiceImpl implements ApiImdbMovieService {
     private final OkHttpClient client = new OkHttpClient();
 
     /**
-     * Consulta via cliente Http IMDBs pelo titulo.
-     * Como não consegui acesso a API do site imdb.com optei por usar
-     * uma outra base conforme link http://www.omdbapi.com.
+     * Consulta via cliente Http IMDBs pelo titulo, este recurso será um complemento para {@link ImdbCropperMovieServiceImpl}
      *
      * @param title {@link String}
      * @return List<MovieDTO>

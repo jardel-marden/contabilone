@@ -15,6 +15,8 @@ import java.util.List;
 import java.util.Objects;
 
 /**
+ * Implementação do Service de consulta de titulos em pagina html
+ *
  * @author Jardel Marden on 11/10/2020
  * @project ContabilOne
  */
@@ -35,11 +37,11 @@ public class ImdbCropperMovieServiceImpl implements CropperMovieService {
 
         Elements elements = getElements(SELECTOR_DEFAULT);
 
-        return HtmlUtil.parse(elements);
+        return HtmlUtil.toMovie(elements);
     }
 
     /**
-     * Usado por um teste unitário, corresponde ao mesmo processo que @{@link #findByTitle} porem com retorno
+     * Usado por um teste unitário, corresponde ao mesmo processo que {@link #findByTitle} porem com retorno
      * diferente
      *
      * @param title
@@ -64,8 +66,8 @@ public class ImdbCropperMovieServiceImpl implements CropperMovieService {
     }
 
     /**
-     * Antes de executar este metodo necessario escrever o valor do campo document @{@link Document},
-     * apos isso ele filtra o HTML pela class findList que compoem a lista de titulos no site
+     * Antes de executar este metodo necessario escrever o valor do campo document {@link Document},
+     * apos isso ele filtra o HTML pela class .findList que compoem a lista de titulos no site
      * https://www.imdb.com
      *
      * @param selector

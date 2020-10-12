@@ -24,6 +24,12 @@ import java.util.stream.Collectors;
 
 import static br.com.hexacta.desafio.contabilone.server.utils.StringUtil.LINE_SEPARATOR;
 
+/**
+ * Cliente handler para ouvir as solicitações multiplas dos clientes.
+ *
+ * @author Jardel Marden on 11/10/2020
+ * @project ContabilOne
+ */
 @Slf4j
 public class ClientHandler implements Runnable {
 
@@ -84,7 +90,7 @@ public class ClientHandler implements Runnable {
      * Adicionei dois serviços de consulta para os titulos, um deles por meio
      * de uma API Rest e o segundo fluxo fazendo recortes no site https://www.imdb.com
      * <p>
-     * Apos realizar a consulta é feito um merge dos resultados, filtrado os registros
+     * Apos realizar a consulta é feito um merge dos resultados filtrando os registros
      * duplicados e ordenado por titulo.
      * <p>
      * A lista com os titulos é tratada para gerar um novo template e o mesmo
