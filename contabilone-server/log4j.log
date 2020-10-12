@@ -1,2 +1,0 @@
-[2020-10-11 21:16:18,805]ERROR     0[Thread-1] - br.com.hexacta.desafio.contabilone.client.socket.ClientIMDB.connect(ClientIMDB.java:40) - Conexão recusada (Connection refused)
-[2020-10-11 21:22:37,660]ERROR     0[Thread-1] - br.com.hexacta.desafio.contabilone.client.socket.ClientIMDB.connect(ClientIMDB.java:39) - Conexão recusada (Connection refused)
